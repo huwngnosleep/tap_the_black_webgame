@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tap The Black</title>
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&display=swap" rel="stylesheet">
+    
+    <style type="text/css">
+        :root {
+            background-color: blanchedalmond;
+            text-shadow: -5px 5px 7px grey;
+            font-family: Ubuntu Condensed;
+            color: rgb(49, 37, 37);
+        }
+
+        #root {
+            position: relative;
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        #game-screen {
+            display: flex;
+            height: 250px;
+            width: 250px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 5px solid black;
+            background-color: rgba(255, 130, 130, 0.658);
+            box-shadow: -5px 5px 3px grey;
+        }
+
+        #score-board {
+            font-size: 25px;
+        }
+
+        .button {
+            padding: 20px;
+            margin: 10px;
+            background-color:rgb(252, 239, 239);
+            border: 0;
+            box-shadow: -5px 5px 5px grey;
+        }
+
+        #button5 {
+            background-color: black;
+        }
+
+    </style>
+</head>
+<body id="root">
+    <div class="container">
+
+    </div>
+    <div id="header">
+        <h1>Tap The Black</h1>
+        <h2>You can't win this game</h2>
+        <h3>Reach score 10 to win</h3>
+        <!-- <button id="button5" class="button" value="5" onclick="chooseButton(but5)"></button> -->
+    </div>
+    <div id="score-board">
+
+    </div>
+    <div id="game-screen" >
+        <div id="row1"></div>
+        <div id="row2"></div>
+        <div id="row3"></div>
+    </div>
+
+    <script type="text/javascript">
+        var row1 = document.getElementById('row1')
+        var row2 = document.getElementById('row2')
+        var row3 = document.getElementById('row3')
+        var scoreBoard = document.getElementById('score-board')
+        var gameScreen = document.getElementById('game-screen')
+        var items = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        var time = 3000
+        var score = 0
+        var but1 = null
+        var but2 = null
+        var but3 = null
+        var but4 = null
+        var but5 = null
+        var but6 = null            
+        var but7 = null
+        var but8 = null
+        var but9 = null
+        
+        const chooseButton = (button) => {
+            if(button.value === '5') {
+                score++
+                time -= 200
+                clearInterval()
+                setInterval(random, time)
+            } else {
+                time = 3000
+                alert(`Wrong choice!!!, the game will be restarted. Your score: ${score}/10`)
+                score = 0
+                location.reload(true)
+            }
+            if(score === 10) {
+                render()
+                score = 0
+                alert('You won!!!')
+                location.reload(true)
+            }
+            random()
+        }
+        const random = () => {
+            items.sort(() => Math.random() - 0.5 )
+            render()
+        }
+        const assignButton = () => {
+            but1 = document.getElementById('button1')
+            but2 = document.getElementById('button2')
+            but3 = document.getElementById('button3')
+            but4 = document.getElementById('button4')
+            but5 = document.getElementById('button5')
+            but6 = document.getElementById('button6')            
+            but7 = document.getElementById('button7')
+            but8 = document.getElementById('button8')
+            but9 = document.getElementById('button9')
+        }
+        const render = () => {
+            if(score === 9) {
+                time = 1
+                clearInterval()
+                setInterval(random, time)
+            } 
+            
+            var buttons = items.map((item) => 
+                `<button
+                    id="button${item}"
+                    class="button" 
+                    value="${item}"
+                    onclick="chooseButton(but${item})"
+                ></button>`
+            )
+            row1.innerHTML = [buttons[0], buttons[1], buttons[2]].join('')
+            row2.innerHTML = [buttons[3], buttons[4], buttons[5]].join('')
+            row3.innerHTML = [buttons[6], buttons[7], buttons[8]].join('')
+            scoreBoard.innerHTML = `<h3>Your score: ${score}/10</h3>`
+
+        }
+        render()
+        assignButton()
+
+    </script>
+</body>
+</html>
