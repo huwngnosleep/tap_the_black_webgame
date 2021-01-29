@@ -27,6 +27,7 @@
         }
 
         #game-screen {
+            position: relative;
             display: flex;
             height: 250px;
             width: 250px;
@@ -40,6 +41,13 @@
 
         #score-board {
             font-size: 25px;
+        }
+
+        .death-button {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            opacity: 0;
         }
 
         .button {
@@ -93,7 +101,12 @@
         var but7 = null
         var but8 = null
         var but9 = null
-        
+        var deathButton = document.createElement('button')
+        deathButton.classList.add('death-button')
+        deathButton.onclick = function() {
+            alert('You losed')
+            location.reload(true)
+        }
         const chooseButton = (button) => {
             if(button.value === '5') {
                 score++
@@ -132,6 +145,7 @@
         const render = () => {
             if(score === 9) {
                 time = 1
+                gameScreen.appendChild(deathButton)
                 clearInterval()
                 setInterval(random, time)
             } 
