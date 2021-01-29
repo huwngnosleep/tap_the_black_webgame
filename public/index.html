@@ -16,14 +16,26 @@
             color: rgb(49, 37, 37);
         }
 
+        a {
+            text-decoration: none;
+            color: rgb(0, 0, 0);
+        }
+
+        a:active {
+            color: #333333;
+        }
+
         #root {
             position: relative;
-            margin-top: 50px;
+            margin-top: 30px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
+            max-width: 574px;
+            height: 574px;
+            margin: auto;
         }
 
         #game-screen {
@@ -37,17 +49,27 @@
             border: 5px solid black;
             background-color: rgba(255, 130, 130, 0.658);
             box-shadow: -5px 5px 3px grey;
+            
         }
 
         #score-board {
             font-size: 25px;
         }
 
-        .death-button {
+        #credit {
+            display: flex;
             position: absolute;
-            height: 100%;
-            width: 100%;
-            opacity: 0;
+            justify-content: space-around;
+            width: 70%;
+            align-items: center;
+            top: 100%;
+            margin: auto;
+        }
+
+        #credit a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .button {
@@ -56,18 +78,33 @@
             background-color:rgb(252, 239, 239);
             border: 0;
             box-shadow: -5px 5px 5px grey;
+            cursor: pointer;
         }
 
         #button5 {
             background-color: black;
         }
 
+        .alert {
+            position: absolute;
+            height: 200px;
+            width: 200px;
+            font-size: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(207, 248, 248);
+            cursor: pointer;
+            box-shadow: -5px 5px 10px grey;
+        }
+
+        .score {
+            margin-top: 10px;
+        }
+
     </style>
 </head>
 <body id="root">
-    <div class="container">
-
-    </div>
     <div id="header">
         <h1>Tap The Black</h1>
         <h2>Can you win this game?</h2>
@@ -82,48 +119,40 @@
         <div id="row2"></div>
         <div id="row3"></div>
     </div>
-
+    <div id="credit">
+        <a href="https://www.facebook.com/huwngnosleep/" target="_blank"><ion-icon name="logo-facebook"></ion-icon>HuwngNoSleep</a>
+        <a href="#">Bui Huy Tung</a>
+    </div>
     <script type="text/javascript">
-        var row1 = document.getElementById('row1')
-        var row2 = document.getElementById('row2')
-        var row3 = document.getElementById('row3')
-        var scoreBoard = document.getElementById('score-board')
-        var gameScreen = document.getElementById('game-screen')
-        var items = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        var time = 3000
-        var score = 0
-        var but1 = null
-        var but2 = null
-        var but3 = null
-        var but4 = null
-        var but5 = null
-        var but6 = null            
-        var but7 = null
-        var but8 = null
-        var but9 = null
-        var deathButton = document.createElement('button')
-        deathButton.classList.add('death-button')
-        deathButton.onclick = function() {
-            alert('You losed')
-            location.reload(true)
-        }
+        let row1 = document.getElementById('row1')
+        let row2 = document.getElementById('row2')
+        let row3 = document.getElementById('row3')
+        let scoreBoard = document.getElementById('score-board')
+        let gameScreen = document.getElementById('game-screen')
+        let items = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        let time = 3000
+        let score = 0
+        const card = document.createElement('div')
+        card.textContent = 'You won!!!'
+        card.classList.add('alert')
+        card.addEventListener('click', () => location.reload())
+
         const chooseButton = (button) => {
             if(button.value === '5') {
                 score++
-                time -= 200
-                clearInterval()
+                time -= 250
                 setInterval(random, time)
             } else {
                 time = 3000
-                alert(`Wrong choice!!!, the game will be restarted. Your score: ${score}/10`)
-                score = 0
-                location.reload(true)
+                card.textContent = `You lose!!!`
+                gameScreen.appendChild(card)
+            }
+            if(score === 9) {
+                time = 1
+                setInterval(random, time)
             }
             if(score === 10) {
-                render()
-                score = 0
-                alert('You won!!!')
-                location.reload(true)
+                gameScreen.appendChild(card)
             }
             random()
         }
@@ -143,12 +172,6 @@
             but9 = document.getElementById('button9')
         }
         const render = () => {
-            if(score === 9) {
-                time = 1
-                gameScreen.appendChild(deathButton)
-                clearInterval()
-                setInterval(random, time)
-            } 
             
             var buttons = items.map((item) => 
                 `<button
@@ -158,15 +181,18 @@
                     onclick="chooseButton(but${item})"
                 ></button>`
             )
+            
             row1.innerHTML = [buttons[0], buttons[1], buttons[2]].join('')
             row2.innerHTML = [buttons[3], buttons[4], buttons[5]].join('')
             row3.innerHTML = [buttons[6], buttons[7], buttons[8]].join('')
-            scoreBoard.innerHTML = `<h3>Your score: ${score}/10</h3>`
-
+            scoreBoard.innerHTML = `<h3 class="score">Your score: ${score}/10</h3>`
         }
         render()
         assignButton()
 
     </script>
+
+    <!-- ion icons -->
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 </body>
 </html>
